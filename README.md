@@ -11,3 +11,5 @@ logmsg(int level,char *fmt,...);
 Used to print the content to the log file.
 level can be, INFO,ERROR,FATAL
 
+Note: For more info see sample.c
+
