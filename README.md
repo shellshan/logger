@@ -1,10 +1,10 @@
 # logger
-c header for logger automatic daily log file.
+c header for logger automatic daily logfile.
 
 # Functions
-create_logger(char *dir,char *log_prefix_anme);
+create_logger(char *dir,char *log_prefix_name);
 
-Used to ceate the log file with your options. Automatically suffix will be added like "_DD_MM_YYYY.log"
+Used to create the logfile with your options. Automatically suffix will be added like "_DD_MM_YYYY.log"
 
 logmsg(int level,char *fmt,...);
 
