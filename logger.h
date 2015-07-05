@@ -47,21 +47,21 @@ void check_new_file();
 	* ===  FUNCTION  ======================================================================
 	*         Name:  create_logger
 	*  Description:  This is a main function to start with logger. This will create the file
- *                pointer for log file.
+	*                pointer for log file.
 	*   Parameters:  Directory(where log file should create),File name
 	*       Return:  Nothing
 	* =====================================================================================
 	*/
-void create_logger(char *dirpath ,char *name ) 
+void create_logger(char *dirpath ,char *log_prefix_name) 
 {
-        int size = strlen(dirpath)+strlen(name)+1+1 ; //Calculating size for malloc ; here +1 for "/" another +1 for \0
+								int size = strlen(dirpath)+strlen(log_prefix_name)+1+1 ; //Calculating size for malloc ; here +1 for "/" another +1 for \0
 
-        org_log_name = (char *) malloc(sizeof(char)*size);
-        memset(org_log_name,0,size);
+								org_log_name = (char *) malloc(sizeof(char)*size);
+								memset(org_log_name,0,size);
 
 								strcat(org_log_name,dirpath);
 								strcat(org_log_name,"/");
-        strcat(org_log_name,name);
+								strcat(org_log_name,log_prefix_name);
 								get_current_date(&day,&month,&year);
 								gen_log_name();
 								open_log_file();
@@ -82,7 +82,7 @@ void open_log_file()
 								{
 																printf("Unable to open the log file '%s' - %s\n", log_name , strerror(errno));
 								}
-        free(log_name);//Once the file opened no use of 'log_name' so free the memory 
+								free(log_name);//Once the file opened no use of 'log_name' so free the memory 
 }
 
 /* 
@@ -97,30 +97,30 @@ void logmsg(int level, char *fmt , ...)
 {
 								check_new_file();
 								if ( log_fp != NULL ) 
-        {
-								va_list ap;
-								char buf[64];
-								char level_name[10];
+								{
+																va_list ap;
+																char buf[64];
+																char level_name[10];
 
-								if (level == INFO )
-																strcpy(level_name,"INFO");
-								else if (level == ERROR)
-																strcpy(level_name,"ERROR");
-								else if (level == FATAL)
-																strcpy(level_name,"FATAL");
-								else
-																strcpy(level_name,"INFO");
+																if (level == INFO )
+																								strcpy(level_name,"INFO");
+																else if (level == ERROR)
+																								strcpy(level_name,"ERROR");
+																else if (level == FATAL)
+																								strcpy(level_name,"FATAL");
+																else
+																								strcpy(level_name,"INFO");
 
-								// Preparing time stamp
-								time_t meow = time(NULL);
-								strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&meow));
+																// Preparing time stamp
+																time_t meow = time(NULL);
+																strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&meow));
 
-								va_start(ap, fmt);
-								fprintf(log_fp,"%s : [%5d] : %5s : ",buf,(int)getpid(),level_name);
-								vfprintf(log_fp, fmt, ap);
-        fflush(log_fp);
-								va_end(ap);
-        }
+																va_start(ap, fmt);
+																fprintf(log_fp,"%s : [%5d] : %5s : ",buf,(int)getpid(),level_name);
+																vfprintf(log_fp, fmt, ap);
+																fflush(log_fp);
+																va_end(ap);
+								}
 								if (level == FATAL)
 																exit(1);
 }
@@ -129,7 +129,7 @@ void logmsg(int level, char *fmt , ...)
 	* ===  FUNCTION  ======================================================================
 	*         Name:  get_current_date
 	*  Description:  Used to get the current date details, Store value to the pointer variable
- *                which passed to the function 
+	*                which passed to the function 
 	*   Parameters:  int pointer for day, int pointer for month, int pointer for year
 	*       Return:  Nothing
 	* =====================================================================================
@@ -154,9 +154,9 @@ void get_current_date( int * day, int * month, int * year ) {
 	*/
 void gen_log_name()
 {
-        int size = strlen(org_log_name)+15+1 ; //Here extra 15 for '_01_01_2015.log' +1 for \0
-        log_name = (char *) malloc(sizeof(char)*size);
-        memset(log_name,0,size);
+								int size = strlen(org_log_name)+15+1 ; //Here extra 15 for '_01_01_2015.log' +1 for \0
+								log_name = (char *) malloc(sizeof(char)*size);
+								memset(log_name,0,size);
 								sprintf(log_name,"%s_%02d_%02d_%d.log",org_log_name,day,month,year);
 }
 
@@ -164,7 +164,7 @@ void gen_log_name()
 	* ===  FUNCTION  ======================================================================
 	*         Name:  check_new_file 
 	*  Description:  this ll be called by logmsg for every call of log to check the date and 
- *                generate new file. if the day over.
+	*                generate new file. if the day over.
 	*   Parameters:  Nothing 
 	*       Return:  Nothing
 	* =====================================================================================
